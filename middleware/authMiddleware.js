@@ -4,12 +4,14 @@ const User = require("../models/userModel");
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
-  if (req.headers.authorisation && req.headers.authorisation.startsWith("Bearer")) {
+  //console.log(req);
+  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
     try {
       //get token from header
-      token = req.headers.authorisation.split(" ")[1];
+      token = req.headers.authorization.split(" ")[1];
+      console.log(token);
       //verify token
-      const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
       //obtain the user using id and send it to the next controller
       req.user = await User.findById(decoded.id).select("-password");
       next();

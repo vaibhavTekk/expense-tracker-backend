@@ -26,20 +26,20 @@ const editExpense = asyncHandler(async (req, res) => {
 });
 
 const deleteExpense = asyncHandler(async (req, res) => {
-  const expense = await Expense.find({ id: req.params.id, user: req.user.id });
+  const expense = await Expense.findById(req.params.id);
   if (!expense) {
     res.status(400);
     throw new Error("Entry not found");
   }
-  const user = await User.findById(req.user.id);
 
+  const user = await User.findById(req.user.id);
   if (!user) {
     res.status(401);
     throw new Error("User not found");
   }
 
-  await expense.remove();
-  res.json(`deleted expense ${req.params.id}`);
+  const deleteExpense = await Expense.findByIdAndDelete(req.params.id);
+  res.json(deleteExpense);
 });
 
 module.exports = { getExpenses, createExpense, editExpense, deleteExpense };

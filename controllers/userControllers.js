@@ -53,7 +53,9 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const getUser = asyncHandler(async (req, res) => {
-  res.json("getUser");
+  const user = await User.findById(req.user.id);
+  res.status(200);
+  res.json(user);
 });
 
 const generateToken = (id) => {
