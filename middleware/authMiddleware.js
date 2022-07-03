@@ -9,7 +9,7 @@ const protect = asyncHandler(async (req, res, next) => {
     try {
       //get token from header
       token = req.headers.authorization.split(" ")[1];
-      console.log(token);
+      //console.log(token);
       //verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       //obtain the user using id and send it to the next controller
