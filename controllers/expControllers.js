@@ -22,7 +22,28 @@ const createExpense = asyncHandler(async (req, res) => {
 });
 
 const editExpense = asyncHandler(async (req, res) => {
-  res.json(`put expense ${req.params.id}`);
+  const { amount, remarks, category } = req.body;
+  const userid = req.user.id;
+  const expenseObject = { userid, amount, remarks, category };
+  if (!amount || amount == 0 || !category) {
+    res.status(400);
+    throw new Error("Please Enter an amount and choose valid category");
+  }
+  const user = await User.findById(req.user.id);
+  if (!user) {
+    res.status(401);
+    throw new Error("User not found");
+  }
+  const expense = await Expense.findById(req.params.id);
+
+  if (expense.user.toString() != user.id) {
+    res.status(401);
+    throw new Error("Unauthorised Action");
+  }
+
+  const updatedexpense = await Expense.findByIdAndUpdate(req.params.id, expenseObject, { new: true });
+  res.status(200);
+  res.json(updatedexpense);
 });
 
 const deleteExpense = asyncHandler(async (req, res) => {
@@ -36,6 +57,11 @@ const deleteExpense = asyncHandler(async (req, res) => {
   if (!user) {
     res.status(401);
     throw new Error("User not found");
+  }
+
+  if (expense.user.toString() != user.id) {
+    res.status(401);
+    throw new Error("Unauthorised Action");
   }
 
   const deleteExpense = await Expense.findByIdAndDelete(req.params.id);
