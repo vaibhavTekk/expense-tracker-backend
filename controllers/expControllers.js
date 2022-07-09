@@ -12,7 +12,7 @@ const createExpense = asyncHandler(async (req, res) => {
   const { amount, remarks } = req.body;
   const user = req.user.id;
   const expenseObject = { user, amount, remarks };
-  console.log(expenseObject);
+
   if (!amount || amount <= 0) {
     res.status(400);
     throw new Error("Please Enter an amount and choose valid category");
