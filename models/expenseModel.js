@@ -14,11 +14,11 @@ const expenseModel = mongoose.Schema(
     },
     remarks: {
       type: String,
-    },
+    } /*
     category: {
       type: String,
       required: [true, "Enter a category"],
-    },
+    },*/,
   },
   { timestamps: true }
 );

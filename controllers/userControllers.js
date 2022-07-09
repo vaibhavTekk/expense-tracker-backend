@@ -58,9 +58,19 @@ const getUser = asyncHandler(async (req, res) => {
   res.json(user);
 });
 
+const isLoggedin = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.id);
+  if (!user._id) {
+    res.status(400);
+    throw new Error("User not found");
+  }
+  res.status(200);
+  res.json({ status: true });
+});
+
 const generateToken = (id) => {
   const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30m" });
   return token;
 };
 
-module.exports = { loginUser, registerUser, getUser };
+module.exports = { loginUser, registerUser, getUser, isLoggedin };
