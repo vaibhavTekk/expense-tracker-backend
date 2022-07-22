@@ -9,9 +9,9 @@ const getExpenses = asyncHandler(async (req, res) => {
 });
 
 const createExpense = asyncHandler(async (req, res) => {
-  const { amount, remarks } = req.body;
+  const { amount, remarks, created, category } = req.body;
   const user = req.user.id;
-  const expenseObject = { user, amount, remarks };
+  const expenseObject = { user, amount, remarks, created, category };
 
   if (!amount || amount <= 0) {
     res.status(400);
